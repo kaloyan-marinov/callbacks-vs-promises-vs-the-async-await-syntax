@@ -133,65 +133,49 @@ When you start creating `Promise`s, that's when you're more likely to screw thin
    - https://appdividend.com/2019/01/03/javascript-promise-resolve-example-promise-resolve-tutorial/ >> "Difference between Promise.resolve() and new Promise()"
    - https://www.freecodecamp.org/news/javascript-promise-tutorial-how-to-resolve-or-reject-promises-in-js/ >> The Promise.resolve/reject methods
 
+# 3. How to use the `async`/`await` syntax
+
+Having understood the previous sections, you should be in the clear to use the `async`/`await` syntax responsibly.
+
+We already know that
+`Promise`s are a huge improvement over callbacks. But `Promise`s can still be
+really hard to read and follow, especially when you have a long chain of
+multiple asynchronous operations such as:
+
+```
+function promiseHell() {
+  // Define `db` as an API to a database.
+  let userId;
+  let postId;
+
+  db.then(u => {
+    return db.user().then((v) => v.json());
+  }).then(u => {
+    const userId = u.id;
+    return db.posts(userId).then((v) => v.json());
+  }).then(p => {
+    const postId = p.id;
+    return db.comments(postId).then((v) => v.json());
+  })
+}
+```
+
+The `async`/`await` syntax really just boils down to syntactic sugar, which makes your asynchronous code read like synchronous code.
+
+1. Example of using the `async` keyword when you define function (without using the `await` keyword in the function body)
+
+   If you define a function, using the `async` keyword in the definition achieves the following effect: whatever gets returned inside the function will be a `Promise` of that value.
+
+   To demonstrate this, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 3-1-use-async-only.ts
+   $ node 3-1-use-async-only.js
+   ```
+
 # The remainder
 
-so now
-that you know all that stuff you should
-be in the clear to use async await
-responsibly
-
-we already know that
-`Promise`s are a huge improvement over
-callbacks
-
-but `Promise`s can still be
-really hard to read and follow,
-especially when you have a long chain of
-multiple asynchronous events
-
-async await
-really just boils down to syntactic
-sugar to make your asynchronous code
-read like synchronous code
-
 ---
-
-first let's
-look at the async part of the equation
-and see what that does
-
-so here we have a
-regular function that does nothing and,
-if we put the async keyword in front of
-it, we have a function that returns a
-`Promise` of nothing
-
-so whatever gets
-returned inside this function will be a
-`Promise` of that value
-
-I'm going to reuse
-this getFruit function throughout the
-lesson just to simulate what a `Promise`
-based API looks like
-
-in this case the
-user can pass in the name of a fruit and
-then the function will resolve to the
-value of the fruit emoji from this
-object
-
-and just to make this a little
-more clear if we didn't use the async
-keyword we could write this function by
-just returning a `Promise` that resolves
-to this value
-
-so when you use the async
-keyword the magic
-that happens is that it takes the return
-value and automatically resolves it as a
-`Promise`
 
 but that's not everything that
 it does it also sets up a context for
