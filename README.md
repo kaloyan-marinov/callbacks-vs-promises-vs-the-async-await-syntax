@@ -46,37 +46,28 @@ $ node 0-event-loop.ts
 
 So now that you know how the event loop works, we can start looking at `Promise`s.
 
+# How a `Promise`-based API might be consumed
+
+`fetch` is a browser-based API, but it's also available on Node.js via the `node-fetch` library, and it allows us to hit an HTTP endpoint and have the response - or, to be precise, a `Promise` of the response! - returned to us.
+
+Fetching data from a remote HTTP server is always going to be async, so:
+
+(a) we can queue up a `Promise` that represents a request made to a remote HTTP server, then
+
+(b) provide it with a callback to map it to JSON.
+
+(c) Mapping to JSON is also a `Promise`, so we can return that `Promise` from the first `then` callback, and provide that `Promise` with its own `then` callback that will return a plain JavaScript object (matching the actual JSON data within the body of the response).
+
+To witness the above-described nature of the event loop, you should issue:
+
+```
+$ node_modules/typescript/bin/tsc 1-consume-promise-based-api.ts
+$ node 1-consume-promise-based-api.js
+```
+
 # The remainder
 
-first
-I'll show you how a `Promise` based API
-might be consumed
-and then we'll look at
-how we actually create our own `Promise`s
-from scratch
-
-so fetch is a browser-based
-API but it's also available on node via
-the `node-fetch` library, and it allows us
-to hit an HTTP endpoint and have the
-response returned to us as a `Promise` of
-the response
-
-fetching data from a remote
-server is always going to be async, so
-we can queue up the `Promise`, then provide
-it with a callback to map it to JSON
-
-the
-great thing about `Promise`s is that we
-can chain them together
-
-mapping to JSON
-is also a `Promise` so we can return that
-`Promise` from the original then callback
-and then in the next one we'll have the
-actual user data as a plain JavaScript
-object
+The great thing about `Promise`s is that we can chain them together.
 
 if we go ahead and run this code
 you'll see it runs our console log first
