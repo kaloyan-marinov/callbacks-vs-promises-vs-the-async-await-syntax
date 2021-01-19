@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax/issues"
   },
-  "homepage": "https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax#readme"
+  "homepage": "https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax#readme",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
 }
