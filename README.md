@@ -50,50 +50,44 @@ So now that you know how the event loop works, we can start looking at `Promise`
 
 `fetch` is a browser-based API, but it's also available on Node.js via the `node-fetch` library, and it allows us to hit an HTTP endpoint and have the response - or, to be precise, a `Promise` of the response! - returned to us.
 
-Fetching data from a remote HTTP server is always going to be async, so:
+Fetching data from a remote HTTP server is always going to be async, so let us give some examples of how one can do that.
 
-(a) we can queue up a `Promise` that represents a request made to a remote HTTP server, then
+1. Example of how to consume a `Promise`-based API
 
-(b) provide it with a callback to map it to JSON.
+   (a) we can queue up a `Promise` that represents a request made to a remote HTTP server, then
 
-(c) Mapping to JSON is also a `Promise`, so we can return that `Promise` from the first `then` callback, and provide that `Promise` with its own `then` callback that will return a plain JavaScript object (matching the actual JSON data within the body of the response).
+   (b) provide it with a callback to map it to JSON.
 
-To witness the above-described nature of the event loop, you should issue:
+   (c) Mapping to JSON is also a `Promise`, so we can return that `Promise` from the first `then` callback, and provide that `Promise` with its own `then` callback that will return a plain JavaScript object (matching the actual JSON data within the body of the response).
 
-```
-$ node_modules/typescript/bin/tsc 1-consume-promise-based-api.ts
-$ node 1-consume-promise-based-api.js
-```
+   To witness the above-described nature of the event loop, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 1-1-consume-promise-based-api.ts
+   $ node 1-1-consume-promise-based-api.js
+   ```
+
+2. Example of how to consume a `Promise`-based API as well as how to handle errors
+
+   One convenient aspect of using `Promise`s for asynchronous operations in our code is that we can catch all errors within our asynchronous code (= _anywhere_ within the chain of `then` callbacks) with a single function. (If we instead use callbacks for asynchronous operations in our code, you have to have a separate error handler for every single one of the asynchronous operations.)
+
+   We can do this by appending `catch` to (the end of) the chain of `then` callbacks, and by providing an `(err) => { ... }` callback as input to the `catch` method. The provided `catch` callback will handle errors that happen anywhere within our asynchronous code (= _anywhere_ within the chain of `then` callbacks).
+
+   So, if an error is thrown anywhere in our asynchronous code, it's going to bypass all of the subsequent `then` callbacks and go straight to the `catch` callback.
+
+   To witness the above-described nature of the event loop, plus how to handle errors when consuming a `Promise`-based API, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 1-2-consume-promise-based-api-but-also-handle-error.ts
+   $ node 1-2-consume-promise-based-api-but-also-handle-error.js
+   ```
 
 # The remainder
 
-The great thing about `Promise`s is that we can chain them together.
-
-if we go ahead and run this code
-you'll see it runs our console log first
-and then it retrieves the data from the
-API and console logs that afterwards
-
 the
-great thing about `Promise`s is that you
-can catch all errors in the chain with a
-single function
+great thing about `Promise`s is that
 
-we can do this by adding
-catch to the bottom of our `Promise` chain
-and it will handle errors that happen
-anywhere within our asynchronous code
-
-if
-this code were callback based we'd have
-to have a separate error handler for
-every single one of the asynchronous
-operations
-
-so if an error is thrown
-anywhere in our code it's going to
-bypass all of the future `then` callbacks
-and go straight to the `catch` callback
+We can do this by adding `catch` to the bottom of chain of `then` callbacks, and it will handle errors that happen anywhere within our asynchronous code.
 
 ---
 
