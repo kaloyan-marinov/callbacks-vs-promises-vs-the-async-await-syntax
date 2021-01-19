@@ -46,7 +46,7 @@ $ node 0-event-loop.ts
 
 So now that you know how the event loop works, we can start looking at `Promise`s.
 
-# How a `Promise`-based API might be consumed
+# 1. How a `Promise`-based API might be consumed
 
 `fetch` is a browser-based API, but it's also available on Node.js via the `node-fetch` library, and it allows us to hit an HTTP endpoint and have the response - or, to be precise, a `Promise` of the response! - returned to us.
 
@@ -82,42 +82,18 @@ Fetching data from a remote HTTP server is always going to be async, so let us g
    $ node 1-2-consume-promise-based-api-but-also-handle-error.js
    ```
 
-# The remainder
+# 2. How to create a `Promise`
 
-the
-great thing about `Promise`s is that
+When you start creating `Promise`s, that's when you're more likely to screw things up.
 
-We can do this by adding `catch` to the bottom of chain of `then` callbacks, and it will handle errors that happen anywhere within our asynchronous code.
+1. Example of running an expensive operation on the main thread
 
----
+   To witness that running an expensive operation on the main thread results in essentially freezing the execution, you should issue:
 
-when you start creating `Promise`s that's
-when you're more likely to screw things
-up
-
-first I'm setting up a log function
-so I can show you the elapsed time
-between each line of code
-
-up
-
-a while
-loop that loops a billion times
-arbitrarily
-
-if we run this on the main
-thread it's going to block all of their
-code from executing until the billion
-loops are done
-
-so we'll do one console
-log, run our while loop, and then do
-another console log after that;
-and you
-can see it takes about seven hundred
-milliseconds to finish the while loop;
-our script is essentially frozen until
-that while loop is complete;
+   ```
+   $ node_modules/typescript/bin/tsc 2-1-run-expensive-operation-on-main-thread.ts
+   $ 2-1-run-expensive-operation-on-main-thread.js
+   ```
 
 so let's go
 ahead and wrap this code in a `Promise`, so
@@ -175,7 +151,7 @@ that you know all that stuff you should
 be in the clear to use async await
 responsibly
 
----
+# The remainder
 
 we already know that
 `Promise`s are a huge improvement over
