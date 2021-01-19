@@ -1,0 +1,20 @@
+{
+  "name": "callbacks-vs-promises-vs-the-async-await-syntax",
+  "version": "1.0.0",
+  "description": "Callbacks vs. Promises vs. The async/await syntax",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax/issues"
+  },
+  "homepage": "https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax#readme"
+}
