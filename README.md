@@ -16,7 +16,7 @@ we really need to understand things from
 the ground up:
 (a) starting with the browser or nodejs event loop,
 (b) callbacks
-(c) promises
+(c) `Promise`s
 (d) and then finally async/await
 
 in order
@@ -66,7 +66,7 @@ macrotask like a setTimeout or setInterval
 it will be executed on the next
 event loop
 but if it's a microtask like
-a fulfilled promise then it will be
+a fulfilled `Promise` then it will be
 called back before the start of the next
 event loop
 
@@ -76,7 +76,7 @@ actual code first we will write a
 console log which is synchronous then
 we'll throw in a set timeout but give it
 a time delay of zero milliseconds then
-we'll have a promise that resolves right
+we'll have a `Promise` that resolves right
 away and lastly we will add another
 console log for one more synchronous
 line of code so
@@ -99,7 +99,7 @@ then if we run the
 second line it's being queued for a
 future task
 
-then the promise is being
+then the `Promise` is being
 queued to run in the microtask queue,
 immediately after this current task
 
@@ -109,40 +109,40 @@ executed right away
 
 so even though the
 setTimeout callback was queued up
-before the promise, the promise still
+before the `Promise`, the `Promise` still
 gets executed first because of the
 priority of the microtask queue
 
 so now
 that you know how the event loop works,
-we can start looking at promises
+we can start looking at `Promise`s
 
 first
-I'll show you how a promise based API
+I'll show you how a `Promise` based API
 might be consumed
 and then we'll look at
-how we actually create our own promises
+how we actually create our own `Promise`s
 from scratch
 
 so fetch is a browser-based
 API but it's also available on node via
 the `node-fetch` library, and it allows us
 to hit an HTTP endpoint and have the
-response returned to us as a promise of
+response returned to us as a `Promise` of
 the response
 
 fetching data from a remote
 server is always going to be async, so
-we can queue up the promise, then provide
+we can queue up the `Promise`, then provide
 it with a callback to map it to JSON
 
 the
-great thing about promises is that we
+great thing about `Promise`s is that we
 can chain them together
 
 mapping to JSON
-is also a promise so we can return that
-promise from the original then callback
+is also a `Promise` so we can return that
+`Promise` from the original then callback
 and then in the next one we'll have the
 actual user data as a plain JavaScript
 object
@@ -153,12 +153,12 @@ and then it retrieves the data from the
 API and console logs that afterwards
 
 the
-great thing about promises is that you
+great thing about `Promise`s is that you
 can catch all errors in the chain with a
 single function
 
 we can do this by adding
-catch to the bottom of our promise chain
+catch to the bottom of our `Promise` chain
 and it will handle errors that happen
 anywhere within our asynchronous code
 
@@ -175,7 +175,7 @@ and go straight to the `catch` callback
 
 ---
 
-when you start creating promises that's
+when you start creating `Promise`s that's
 when you're more likely to screw things
 up
 
@@ -204,7 +204,7 @@ our script is essentially frozen until
 that while loop is complete;
 
 so let's go
-ahead and wrap this code in a promise, so
+ahead and wrap this code in a `Promise`, so
 we can get it off the main thread and
 execute it as a micro task
 
@@ -212,17 +212,17 @@ this is one
 tricky little way you might screw things
 up
 (
-so we create a new promise we add our
-code inside that promise and then we
+so we create a new `Promise` we add our
+code inside that `Promise` and then we
 have it resolved to that value when done
 
 so you might think that because we're
-wrapping this in a promise that we're
+wrapping this in a `Promise` that we're
 going to execute this off the main
 thread
 
 but the actual creation of the
-promise and that big while loop is still
+`Promise` and that big while loop is still
 happening on the main thread, it's only
 the resolving of the value that happens
 as a micro task;
@@ -237,13 +237,13 @@ thread
 so to ensure that all of our
 synchronous code runs as fast as
 possible we'll ??refactor?? our code once
-again to say promise resolve,
+again to say `Promise` resolve,
 then we'll
 run the while loop inside of that result
-promises callback
+`Promise`s callback
 
 by putting this code
-inside of a resolved promise we can be
+inside of a resolved `Promise` we can be
 guaranteed that it will be executed
 after all the synchronous code in the
 current macro task has completed
@@ -251,7 +251,7 @@ current macro task has completed
 if we
 go ahead and run our script again you
 can see we get our two console logs
-right away and then finally the promise
+right away and then finally the `Promise`
 resolves after 700 milliseconds
 
 so now
@@ -262,10 +262,10 @@ responsibly
 ---
 
 we already know that
-promises are a huge improvement over
+`Promise`s are a huge improvement over
 callbacks
 
-but promises can still be
+but `Promise`s can still be
 really hard to read and follow,
 especially when you have a long chain of
 multiple asynchronous events
@@ -285,15 +285,15 @@ so here we have a
 regular function that does nothing and,
 if we put the async keyword in front of
 it, we have a function that returns a
-promise of nothing
+`Promise` of nothing
 
 so whatever gets
 returned inside this function will be a
-promise of that value
+`Promise` of that value
 
 I'm going to reuse
 this getFruit function throughout the
-lesson just to simulate what a promise
+lesson just to simulate what a `Promise`
 based API looks like
 
 in this case the
@@ -305,14 +305,14 @@ object
 and just to make this a little
 more clear if we didn't use the async
 keyword we could write this function by
-just returning a promise that resolves
+just returning a `Promise` that resolves
 to this value
 
 so when you use the async
 keyword the magic
 that happens is that it takes the return
 value and automatically resolves it as a
-promise
+`Promise`
 
 but that's not everything that
 it does it also sets up a context for
@@ -332,12 +332,12 @@ value
 
 instead of chaining together a
 bunch of then callbacks we can just have
-a promise resolve to the value of a
+a `Promise` resolve to the value of a
 variable
 
 await is like saying pause
 the execution of this function until the
-get fruit promise results to a value at
+get fruit `Promise` results to a value at
 which point we can use it as the
 variable a
 
@@ -348,16 +348,16 @@ and then we'll return them together as an
 array
 
 one of the most annoying things
-with promises is that it's kind of
+with `Promise`s is that it's kind of
 difficult to share result values between
-multiple steps in the promise chain;
+multiple steps in the `Promise` chain;
 but
 async/await solves this problem really
 nicely
 
 the code on the right is what
 this would look like if we wrote it with
-just regular promises, and as you can see
+just regular `Promise`s, and as you can see
 there's a lot more code and a lot more
 complexity there;
 now if you're already a
@@ -393,11 +393,11 @@ get the second fruit;
 but the whole point
 of the event loop is to avoid blocking
 code like this so we know that an async
-function always returns a promise, so
+function always returns a `Promise`, so
 instead of doing one after the other we
-can add both of our promises to Promise.all
+can add both of our `Promise`s to `Promise`.all
 
-- this will tell all the promises in
+- this will tell all the `Promise`s in
   the array to run concurrently and then
   have the resolved values be at that
   index in the array
@@ -410,9 +410,9 @@ function unnecessarily
 
 so instead of
 awaiting a whole bunch of individual
-promises, you might want to add all your
-promises to an array and then await that
-Promise.all call and as you can see here
+`Promise`s, you might want to add all your
+`Promise`s to an array and then await that
+`Promise`.all call and as you can see here
 we've doubled the speed of the original
 function
 
@@ -422,13 +422,13 @@ another nice benefit of async
 await is error handling
 
 instead of
-chaining a catch callback to our promise
+chaining a catch callback to our `Promise`
 chain we can just wrap our code in a
 try-catch block
 
 this offers much better
 flexibility when handling errors that
-might occur across multiple promises
+might occur across multiple `Promise`s
 
 if
 we take our code from the last example
@@ -444,17 +444,17 @@ can catch the error and return a value
 (
 your decision here will dictate the
 control flow for the consumer of this
-promise;
+`Promise`;
 if you return a value it's
 basically like ignoring the error and
 then providing some replacement value so
-the consumer the promise won't get an
+the consumer the `Promise` won't get an
 error but instead they'll get the result
 value inside of the then callback;
 in
 contrast if we throw an error inside of
 our catch block it will break the
-consumers promise chain and be handled
+consumers `Promise` chain and be handled
 by their catch callback
 )
 
@@ -468,9 +468,9 @@ to retrieve all these ideas from the
 database
 
 we can use a ray map to convert
-them to an array of promises and then
+them to an array of `Promise`s and then
 resolve them all concurrently using
-Promise.all
+`Promise`.all
 
 that looks great but you
 need to be careful when using
@@ -486,13 +486,13 @@ but that's actually not what
 happens in this case
 
 instead it will run
-all these promises concurrently so that
+all these `Promise`s concurrently so that
 might not be the behavior that you're
 expecting
 
 if you want to run a loop and
 have every iteration in that loop a way
-to promise, you need to use a traditional
+to `Promise`, you need to use a traditional
 for loop
 
 so you can write async
@@ -500,7 +500,7 @@ functions and then write a for loop
 inside that function and then use the
 await keyword inside the loop - when you
 write your code like this it will pause
-each step of a loop until that promise
+each step of a loop until that `Promise`
 is resolved;
 but more often than not
 you'll probably want to run everything
@@ -508,7 +508,7 @@ concurrently and a cool thing you can do
 is use the await keyword directly in a
 for loop
 
-if you have a promise that you
+if you have a `Promise` that you
 know resolves to an array you can
 actually just use the await keyword
 directly in your loop
@@ -522,13 +522,13 @@ and as you can
 probably imagine you can also use the
 await keyword directly in your conditionals:
 on the left side of the conditional we can
-await the result value from a promise
+await the result value from a `Promise`
 and then we can see if it's equal to
 some other value
 (
 so that gives you a
 super concise way to write conditional
-expressions when working with promises
+expressions when working with `Promise`s
 )
 
 ---
