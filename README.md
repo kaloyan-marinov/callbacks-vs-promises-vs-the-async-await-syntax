@@ -1,121 +1,52 @@
-JavaScript is a single-threaded
-programming language
+# Introduction
 
-yet everything we
-do on the web tends to be blocking or
-time-consuming, which means that
-asynchronous programming is an essential
-skill for any JavaScript developer
+JavaScript is a single-threaded programming language.
 
-today's video will focus primarily on
-the amazing syntactic sugar provided by
-async/await
+Yet everything we do on the web tends to be blocking or time-consuming, which means that _asynchronous programming_ is an essential skill for any JavaScript developer.
 
-but before we can get there
-we really need to understand things from
-the ground up:
-(a) starting with the browser or nodejs event loop,
+The end goal of this repository is illustrate how to use the amazing syntactic sugar provided by `async`/`await`. But, but before we can get there, we really need to understand things from the ground up:
+
+(a) starting with the browser or Node.js _event loop_,
+
 (b) callbacks
+
 (c) `Promise`s
-(d) and then finally async/await
 
-in order
-to understand anything async you really
-need to first understand the event loop
+(d) and then finally `async`/`await`
 
-I'm going to give you
-the general overview (but I highly
-recommend you watch this talk from Jake
-Archibald which is the best explanation
-of the event loop that I've ever seen):
+# 0. The Event Loop
 
-so what is the
-event loop and what does it have to do
-with async/await?
+In order to understand anything async, you really need to first understand the event loop.
 
-both the browser and
-nodejs are always running a single
-threaded event loop to run your code
+(I'm going to give you the general overview, but I highly recommend you watch this talk from Jake
+Archibald: (Jake Archibald: In The Loop - JSConf.Asia) on YouTube.)
 
-on
-the first go around it will run all of
-your synchronous code, but it might also
-queue up asynchronous events to be
-called back later
+So what is the event loop **and what does it have to do with `async`/`await`**?
 
-you say here's a
-function that I need to run but first I
-need to go get some data from the
-network
+Both the browser and Node.js are always running a single-threaded event loop to run your code.
 
-the event loop says okay I'll
-keep doing my thing
+On the first go around:
 
-while you do your
-thing in a separate thread pool
+(a) it will run all of your synchronous code, but
 
-then at
-some point in the future getData will
-finish and let the event loop know that
-it's ready to be called back
+(b) it might also queue up asynchronous events to be _called back_ later.
 
-now this is
-where things get interesting
-if it's a
-macrotask like a setTimeout or setInterval
-it will be executed on the next
-event loop
-but if it's a microtask like
-a fulfilled `Promise` then it will be
-called back before the start of the next
-event loop
+You say, "Here's a function that I need to run, but first I need to go get some data from the network." The event loop says, "Okay, I'll keep doing my thing, while you do your thing in a separate thread pool." Then, at some point in the future, `getData` will finish and let the event loop know that it's ready to be called back - now this is where things get interesting:
 
-let's look at the
-implications of this by writing some
-actual code first we will write a
-console log which is synchronous then
-we'll throw in a set timeout but give it
-a time delay of zero milliseconds then
-we'll have a `Promise` that resolves right
-away and lastly we will add another
-console log for one more synchronous
-line of code so
+(a) if it's a macrotask (like a `setTimeout` or `setInterval`), it will be executed on the next
+event loop, but
 
-nothing here has any
-actual time delay so intuitively I would
-think that
-each line of code would be executed one
-by one
+(b) if it's a microtask (like a resolved `Promise`), then it will be called back before the start of the next event loop.
 
-but that's not how things work in
-the event loop
+To witness the above-described nature of the event loop, you should issue:
 
-if we execute this code
-you can see that first line gets logged
-up right away because it's running on
-the main thread
+```
+$ node 0-event-loop.ts
+```
 
-then if we run the
-second line it's being queued for a
-future task
+So now that you know how the event loop works, we can start looking at `Promise`s.
 
-then the `Promise` is being
-queued to run in the microtask queue,
-immediately after this current task
-
-and
-finally the last console log gets
-executed right away
-
-so even though the
-setTimeout callback was queued up
-before the `Promise`, the `Promise` still
-gets executed first because of the
-priority of the microtask queue
-
-so now
-that you know how the event loop works,
-we can start looking at `Promise`s
+# The remainder
 
 first
 I'll show you how a `Promise` based API
