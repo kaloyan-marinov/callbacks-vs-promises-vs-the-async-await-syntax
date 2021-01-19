@@ -36,7 +36,7 @@ You say, "Here's a function that I need to run, but first I need to go get some 
 (a) if it's a macrotask (like a `setTimeout` or `setInterval`), it will be executed on the next
 event loop, but
 
-(b) if it's a microtask (like a resolved `Promise`), then it will be called back before the start of the next event loop.
+(b) if it's a micro-task (like a resolved `Promise`), then it will be called back before the start of the next event loop.
 
 To witness the above-described nature of the event loop, you should issue:
 
@@ -106,7 +106,7 @@ When you start creating `Promise`s, that's when you're more likely to screw thin
    The problem with this approach is:
 
    - it performs _both_ the actual creation of the `Promise` _and_ the expensive operation on the main thread;
-   - it's only the resolving of the value that happens as a micro task.
+   - it's only the resolving of the value that happens as a micro-task.
 
    To witness that wrapping an expensive operation in a `Promise` still executes that operation on the main thread, you should issue:
 
@@ -115,34 +115,30 @@ When you start creating `Promise`s, that's when you're more likely to screw thin
    $ node 2-2-fail-to-get-the-expensive-op-off-the-main-thread.js
    ```
 
-and executing it as a micro-task
+3. Example of how to get an expensive operation off the main thread (and thus and execute it as a micro-task) with the help of a `Promise`
 
-so to ensure that all of our
-synchronous code runs as fast as
-possible we'll ??refactor?? our code once
-again to say `Promise` resolve,
-then we'll
-run the while loop inside of that result
-`Promise`s callback
+   By putting an expensive operation inside of a resolved `Promise`['s callback][?], we can be guaranteed that the expensive operation will be executed after all the synchronous code in the current macro-task has completed.
 
-by putting this code
-inside of a resolved `Promise` we can be
-guaranteed that it will be executed
-after all the synchronous code in the
-current macro task has completed
+   To witness this, you should issue:
 
-if we
-go ahead and run our script again you
-can see we get our two console logs
-right away and then finally the `Promise`
-resolves after 700 milliseconds
+   ```
+   $ node_modules/typescript/bin/tsc 2-3-avoid-running-expensive-operation-on-main-thread.ts
+   $ node 2-3-avoid-running-expensive-operation-on-main-thread.js
+   ```
+
+   [?]:
+
+   - https://stackoverflow.com/questions/37977589/promise-resolve-with-no-argument-passed-in
+   - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
+   - https://appdividend.com/2019/01/03/javascript-promise-resolve-example-promise-resolve-tutorial/ >> "Difference between Promise.resolve() and new Promise()"
+   - https://www.freecodecamp.org/news/javascript-promise-tutorial-how-to-resolve-or-reject-promises-in-js/ >> The Promise.resolve/reject methods
+
+# The remainder
 
 so now
 that you know all that stuff you should
 be in the clear to use async await
 responsibly
-
-# The remainder
 
 we already know that
 `Promise`s are a huge improvement over
