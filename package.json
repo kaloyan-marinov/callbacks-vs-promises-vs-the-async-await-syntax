@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/kaloyan-marinov/callbacks-vs-promises-vs-the-async-await-syntax#readme",
   "devDependencies": {
+    "@types/node-fetch": "^2.5.8",
     "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
   }
 }
