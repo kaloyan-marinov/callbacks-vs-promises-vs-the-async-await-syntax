@@ -95,36 +95,27 @@ When you start creating `Promise`s, that's when you're more likely to screw thin
    $ 2-1-run-expensive-operation-on-main-thread.js
    ```
 
-so let's go
-ahead and wrap this code in a `Promise`, so
-we can get it off the main thread and
-execute it as a micro task
+2. Example of a subtly incorrect use of `Promise`s - wrapping the expensive operation in a `Promise` does not get an expensive operation off the main thread
 
-this is one
-tricky little way you might screw things
-up
-(
-so we create a new `Promise` we add our
-code inside that `Promise` and then we
-have it resolved to that value when done
+   (a) we create a new `Promise`,
 
-so you might think that because we're
-wrapping this in a `Promise` that we're
-going to execute this off the main
-thread
+   (b) we perform our expensive operation _inside_ that `Promise`, and
 
-but the actual creation of the
-`Promise` and that big while loop is still
-happening on the main thread, it's only
-the resolving of the value that happens
-as a micro task;
-so the first synchronous line gets
-logged right away and the second one
-should too but there's still a 700
-millisecond delay because that while
-loop is still blocking on the main
-thread
-)
+   (c) we resolve the `Promise` to a suitable value.
+
+   The problem with this approach is:
+
+   - it performs _both_ the actual creation of the `Promise` _and_ the expensive operation on the main thread;
+   - it's only the resolving of the value that happens as a micro task.
+
+   To witness that wrapping an expensive operation in a `Promise` still executes that operation on the main thread, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 2-2-fail-to-get-the-expensive-op-off-the-main-thread.ts
+   $ node 2-2-fail-to-get-the-expensive-op-off-the-main-thread.js
+   ```
+
+and executing it as a micro-task
 
 so to ensure that all of our
 synchronous code runs as fast as
