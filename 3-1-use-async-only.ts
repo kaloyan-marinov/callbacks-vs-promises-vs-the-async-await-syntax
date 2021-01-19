@@ -14,8 +14,8 @@ export const getFruit = async (name: string): Promise<string> => {
 
 /*
 The following function:
-  (a) does not use the `async` keyword, but
-  (b) is equivalent to the previous one.
+  (a) is equivalent to the previous one, but
+  (b) does not use the `async` keyword.
 */
 const getFruitWithoutAsync = (name: string): Promise<string> => {
   const fruits: { [key: string]: string } = {
@@ -27,5 +27,5 @@ const getFruitWithoutAsync = (name: string): Promise<string> => {
   return Promise.resolve(fruits[name]);
 };
 
-getFruit("peach").then((v) => console.log(v));
-getFruitWithoutAsync("pineapple").then((v) => console.log(v));
+getFruit("peach").then((v) => console.log(`3-1-*.js - ${v}`));
+getFruitWithoutAsync("pineapple").then((v) => console.log(`3-1-*.js - ${v}`));

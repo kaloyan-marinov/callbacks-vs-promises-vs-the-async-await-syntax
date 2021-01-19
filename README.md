@@ -164,7 +164,7 @@ The `async`/`await` syntax really just boils down to syntactic sugar, which make
 
 1. Example of using the `async` keyword when you define function (without using the `await` keyword in the function body)
 
-   If you define a function, using the `async` keyword in the definition achieves the following effect: whatever gets returned inside the function will be a `Promise` of that value.
+   If you define a function, using the `async` keyword in the definition achieves the following effect: when the function is called, it will return a `Promise` of whatever value follows the executed `return` statement within the function body.
 
    To demonstrate this, you should issue:
 
@@ -173,62 +173,22 @@ The `async`/`await` syntax really just boils down to syntactic sugar, which make
    $ node 3-1-use-async-only.js
    ```
 
+2. Example of using both the `async` keyword and the `await` keyword when you define a function
+
+   The previous example explained that using the `async` keyword when defining the function causes to return a `Promise`.
+
+   But that's not everything that using `async` does - it also sets up a context for you to use the `await` keyword. Using the `await` keyword enables you to pause the execution of the function.
+
 # The remainder
 
 ---
 
-but that's not everything that
-it does it also sets up a context for
-you to use the await keyword
-
-the real
-power of an async function comes when
-you combine it with the await keyword to
-pause the execution of the function
-
-now
-I'm going to write a second async
-function called make smoothie - what we
-need to do is get multiple fruits and
-then combine them together as a single
-value
-
-instead of chaining together a
-bunch of then callbacks we can just have
-a `Promise` resolve to the value of a
-variable
-
-await is like saying pause
-the execution of this function until the
-get fruit `Promise` results to a value at
-which point we can use it as the
-variable a
-
-and then we'll move on to the
-next line of code; after we get a
-pineapple we can then get a strawberry
-and then we'll return them together as an
-array
-
-one of the most annoying things
-with `Promise`s is that it's kind of
-difficult to share result values between
-multiple steps in the `Promise` chain;
-but
-async/await solves this problem really
-nicely
-
-the code on the right is what
-this would look like if we wrote it with
-just regular `Promise`s, and as you can see
-there's a lot more code and a lot more
-complexity there;
 now if you're already a
-JavaScript expert then I'm kind of
-trolling you because you know that the
+JavaScript expert, then I'm kind of
+trolling you, because you know that the
 code on the left is making the single
 biggest mistake that people make when
-using async await, and that is failing to
+using `async` `await`, and that is failing to
 run the code concurrently:
 
 - if we go back
