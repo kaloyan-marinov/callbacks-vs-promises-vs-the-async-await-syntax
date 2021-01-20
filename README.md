@@ -242,6 +242,21 @@ It would be instructive to compare this section's examples side-by-side (because
    $ node 5-2-error-handling-by-returning-a-replacement-value.js
    ```
 
+---
+
+The remainder of this section is optional, and applies only if you are using VS Code. An alternative way of running this section's examples is through VS Code.
+
+- Firstly, issue
+
+```
+$ node_modules/typescript/bin/tsc 5-1-error-handling-by-throwing-another-error.ts
+$ node_modules/typescript/bin/tsc 5-2-error-handling-by-returning-a-replacement-value.ts
+```
+
+- Next, click on the "Run" icon in VS Code's side panel.
+- Then, select the "Launch 5-1" configuration or the "Launch 5-2" configuration from the dropdown menu.
+- Finally, click on the "Start Debugging" icon (which looks like a green triangle).
+
 # The remainder
 
 )
