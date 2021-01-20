@@ -222,6 +222,8 @@ In the `catch` block, you can either throw another error, or return a value. You
 
 - if you return a value, it's basically like ignoring the error and then providing some replacement value, so the consumer of the `Promise` won't get an error but instead they'll get the result value inside of their `then` callback.
 
+It would be instructive to compare this section's examples side-by-side (because they differ in only 1 instruction).
+
 1. Example of error handling by throwing an error in your `catch` block
 
    To witness this approach, you should issue:
@@ -229,6 +231,15 @@ In the `catch` block, you can either throw another error, or return a value. You
    ```
    $ node_modules/typescript/bin/tsc 5-1-error-handling-by-throwing-another-error.ts
    $ node 5-1-error-handling-by-throwing-another-error.js
+   ```
+
+2. Example of error handling by returning a replacement value
+
+   To witness this appraoch, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 5-2-error-handling-by-returning-a-replacement-value.ts
+   $ node 5-2-error-handling-by-returning-a-replacement-value.js
    ```
 
 # The remainder
