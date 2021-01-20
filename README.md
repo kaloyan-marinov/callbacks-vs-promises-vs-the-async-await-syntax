@@ -209,60 +209,30 @@ $ node 4-1-use-async-and-await-responsibly.js
 
 This is something that you should always be thinking about when working with async functions: _you don't want to [accidentally] pause function unnecessarily_.
 
+# 5. Error handling
+
+Another nice benefit of the `async`/`await` syntax is error handling. Instead of
+chaining a `catch` callback to our `Promise` chain, we can just wrap our code in a
+`try`-`catch` block. This offers much better flexibility when handling errors that
+might occur across multiple `Promise`s.
+
+In the `catch` block, you can either throw another error, or return a value. Your decision here will dictate the control flow for the consumer of this `Promise`:
+
+- if you throw an error inside of your `catch` block, it will break the consumer's `Promise` chain and be handled by their `catch` callback;
+
+- if you return a value, it's basically like ignoring the error and then providing some replacement value, so the consumer of the `Promise` won't get an error but instead they'll get the result value inside of their `then` callback.
+
+1. Example of error handling by throwing an error in your `catch` block
+
+   To witness this approach, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 5-1-error-handling-by-throwing-another-error.ts
+   $ node 5-1-error-handling-by-throwing-another-error.js
+   ```
+
 # The remainder
 
----
-
-so
-
-so instead of
-awaiting a whole bunch of individual
-`Promise`s, you might want to add all your
-`Promise`s to an array and then await that
-`Promise`.all call and as you can see here
-we've doubled the speed of the original
-function
-
----
-
-another nice benefit of async
-await is error handling
-
-instead of
-chaining a catch callback to our `Promise`
-chain we can just wrap our code in a
-try-catch block
-
-this offers much better
-flexibility when handling errors that
-might occur across multiple `Promise`s
-
-if
-we take our code from the last example
-and throw an error in the middle of it
-we can then catch that error down here
-in the catch block
-
-the first thing we'll
-probably want to do here is console.log
-the error and then we can either catch
-the error and throw another error, or we
-can catch the error and return a value
-(
-your decision here will dictate the
-control flow for the consumer of this
-`Promise`;
-if you return a value it's
-basically like ignoring the error and
-then providing some replacement value so
-the consumer the `Promise` won't get an
-error but instead they'll get the result
-value inside of the then callback;
-in
-contrast if we throw an error inside of
-our catch block it will break the
-consumers `Promise` chain and be handled
-by their catch callback
 )
 
 ---
