@@ -179,6 +179,15 @@ The `async`/`await` syntax really just boils down to syntactic sugar, which make
 
    But that's not everything that using `async` does - it also sets up a context for you to use the `await` keyword. Using the `await` keyword enables you to pause the execution of the function.
 
+   When using `async` and `await` together, you should take care to avoid the following very common pitfall: failing to run your asynchronous code concurrently.
+
+   To demonstrate how to use `async` and `await` together as well as to make explicit the nature of mentioned pitfall, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 3-2-use-async-and-await-but-fail-to-run-concurrently.ts
+   $ node 3-2-use-async-and-await-but-fail-to-run-concurrently.js
+   ```
+
 # The remainder
 
 ---
@@ -186,16 +195,8 @@ The `async`/`await` syntax really just boils down to syntactic sugar, which make
 now if you're already a
 JavaScript expert, then I'm kind of
 trolling you, because you know that the
-code on the left is making the single
-biggest mistake that people make when
-using `async` `await`, and that is failing to
-run the code concurrently:
+code on the left is making :
 
-- if we go back
-  to the code on the left you can see that
-  we're waiting for a pineapple to resolve
-  and then we're getting a strawberry
-  afterwards;
 - but we could get both of
   these things at the same time (you really
   only need to await one thing after the

@@ -1,6 +1,9 @@
 import { logMessageWithElapsedTime } from "./2-0-utilities";
-import { getFruit } from "./3-0-utilities";
+import { getFruit, getFruitWithDelay } from "./3-0-utilities";
 
+/*
+The following function utilizes a `Promise`-based API.
+*/
 const makeSmoothie = async () => {
   const a = await getFruit("pineapple");
   const b = await getFruit("strawberry");
@@ -9,10 +12,6 @@ const makeSmoothie = async () => {
 
   return smoothie;
 };
-
-const p = makeSmoothie();
-
-p.then((v) => logMessageWithElapsedTime(`3-2-*.js - log #1 - ${v}`));
 
 /*
 The following function:
@@ -36,8 +35,27 @@ const makeSmoothieWithoutAsyncAwait = () => {
   return smoothie;
 };
 
-const pWithoutAsyncAwait = makeSmoothieWithoutAsyncAwait();
+/*
+The following function:
+  (a) is analogous to the first one, but
+  (b) utilizes a `Promise`-based API, which has about 1 second of latency.
+*/
+const makeSmoothieWithDelay = async () => {
+  const a = await getFruitWithDelay("pineapple");
+  const b = await getFruitWithDelay("strawberry");
 
+  const smoothie = [a, b];
+
+  return smoothie;
+};
+
+const p = makeSmoothie();
+p.then((v) => logMessageWithElapsedTime(`3-2-*.js - log #1 - ${v}`));
+
+const pWithoutAsyncAwait = makeSmoothieWithoutAsyncAwait();
 pWithoutAsyncAwait.then((v) =>
   logMessageWithElapsedTime(`3-2-*.js - log #2 - ${v}`)
 );
+
+const pWithDelay = makeSmoothieWithDelay();
+pWithDelay.then((v) => logMessageWithElapsedTime(`3-2-*.js - log #3 - ${v}`));
