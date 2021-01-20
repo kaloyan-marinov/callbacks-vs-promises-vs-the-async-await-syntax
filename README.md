@@ -257,30 +257,39 @@ $ node_modules/typescript/bin/tsc 5-2-error-handling-by-returning-a-replacement-
 - Then, select the "Launch 5-1" configuration or the "Launch 5-2" configuration from the dropdown menu.
 - Finally, click on the "Start Debugging" icon (which looks like a green triangle).
 
+# 6. Syntactic sugars
+
+1. If you want to run a loop, have every iteration in that loop `await` a `Promise`, and do the `await`ing sequentially, you need to use a traditional `for` loop.
+
+   To witness this approach, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 6-1-*.ts
+   $ node 6-1-*.js
+   ```
+
+2. If you want to run a loop, have every iteration in that loop `await` a `Promise`, and do the `await`ing concurrently, you have 2 options.
+
+   To witness this approach, you should issue:
+
+   ```
+   $ node_modules/typescript/bin/tsc 6-2-1-*.ts
+   $ node 6-2-1-syntactic-sugar.js
+
+   $ node_modules/typescript/bin/tsc 6-2-2-*.ts
+   $ node 6-2-2-syntactic-sugar.js
+   ```
+
+   To elaborate on the second option, using `async`/`await` in the higher-order array methods `map` or `forEach` will pause the callback function but not the iteration.
+
 # The remainder
-
-)
-
----
-
-now I want to
-show you a couple of tricks to make your
-code as sweet as possible let's imagine
-we have a string of IDs and then we want
-to retrieve all these ideas from the
-database
 
 we can use a ray map to convert
 them to an array of `Promise`s and then
 resolve them all concurrently using
 `Promise`.all
 
-that looks great but you
-need to be careful when using
-async/await
-in a map or for each loop
-because it
-won't actually pause the function in
+in
 this context
 
 so normally we would expect
@@ -292,11 +301,6 @@ instead it will run
 all these `Promise`s concurrently so that
 might not be the behavior that you're
 expecting
-
-if you want to run a loop and
-have every iteration in that loop a way
-to `Promise`, you need to use a traditional
-for loop
 
 so you can write async
 functions and then write a for loop
