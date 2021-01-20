@@ -188,49 +188,32 @@ The `async`/`await` syntax really just boils down to syntactic sugar, which make
    $ node 3-2-use-async-and-await-but-fail-to-run-concurrently.js
    ```
 
+# 4. How to use the `async`/`await` syntax, as well as to avoid the very common pitfall mentioned in the previous section
+
+You really only need to `await` thing B _after_ thing A if the second value is dependent on the first value - for example, if you need to get a user ID before you can then retrieve some user-specific data from a database (or other persistent storage).
+
+If your situation does not meet that criterion, then the whole point of the event loop is to avoid blocking code (like `await`ing the second asynchronous operation _after_ `await`ing the first one). We now know that an async function always returns a `Promise`, so instead of `await`ing a whole bunch of individual `Promise`s, we can:
+
+1. add both (or several) of our `Promise`s to an array,
+2. pass that array to `Promise.all`, and
+3. `await` the `Promise.all` call;
+
+this will tell all the `Promise`s in the array to run concurrently; `await`ing the `Promise.all` call itself will return an array; and each index of that array will be populated with the value resolved[/rejected][?] from the corresponding `Promise` in the input array.
+
+To witness that this approach doubles the speed of the previous example, you should issue:
+
+```
+$ node_modules/typescript/bin/tsc 4-1-use-async-and-await-responsibly.ts
+$ node 4-1-use-async-and-await-responsibly.js
+```
+
+This is something that you should always be thinking about when working with async functions: _you don't want to [accidentally] pause function unnecessarily_.
+
 # The remainder
 
 ---
 
-now if you're already a
-JavaScript expert, then I'm kind of
-trolling you, because you know that the
-code on the left is making :
-
-- but we could get both of
-  these things at the same time (you really
-  only need to await one thing after the
-  other if the second value is dependent
-  on the first value; for example if you
-  need to get a user ID before you can
-  then retrieve some data from the
-  database)
-
-let's imagine we're making
-these calls from a remote API and
-there's about a second of latency:
-if we
-run this code again with a delay you can
-see it takes a full second to get the
-first fruit and then a full second to
-get the second fruit;
-but the whole point
-of the event loop is to avoid blocking
-code like this so we know that an async
-function always returns a `Promise`, so
-instead of doing one after the other we
-can add both of our `Promise`s to `Promise`.all
-
-- this will tell all the `Promise`s in
-  the array to run concurrently and then
-  have the resolved values be at that
-  index in the array
-
-so this is something
-that you should always be thinking about
-when working with async functions, you
-don't want to accidentally pause
-function unnecessarily
+so
 
 so instead of
 awaiting a whole bunch of individual

@@ -1,6 +1,6 @@
 export const tick: number = Date.now();
 
-export const logMessageWithElapsedTime = (msg: string) => {
+export const logMessageWithElapsedTime = (msg: any) => {
   console.log(`elapsed: ${Date.now() - tick}ms - ${msg}`);
 };
 
