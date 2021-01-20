@@ -1,3 +1,4 @@
+import { logMessageWithElapsedTime } from "./2-0-utilities";
 import { getFruit } from "./3-1-use-async-only";
 
 const makeSmoothie = async () => {
@@ -11,7 +12,7 @@ const makeSmoothie = async () => {
 
 const p = makeSmoothie();
 
-p.then((v) => console.log(`3-2-*.js - log #1 - ${v}`));
+p.then((v) => logMessageWithElapsedTime(`3-2-*.js - log #1 - ${v}`));
 
 /*
 The following function:
@@ -37,4 +38,6 @@ const makeSmoothieWithoutAsyncAwait = () => {
 
 const pWithoutAsyncAwait = makeSmoothieWithoutAsyncAwait();
 
-pWithoutAsyncAwait.then((v) => console.log(`3-2-*.js - log #2 - ${v}`));
+pWithoutAsyncAwait.then((v) =>
+  logMessageWithElapsedTime(`3-2-*.js - log #2 - ${v}`)
+);
