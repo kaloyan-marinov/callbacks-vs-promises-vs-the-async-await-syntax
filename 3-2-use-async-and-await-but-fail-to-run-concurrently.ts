@@ -1,5 +1,5 @@
 import { logMessageWithElapsedTime } from "./2-0-utilities";
-import { getFruit } from "./3-1-use-async-only";
+import { getFruit } from "./3-0-utilities";
 
 const makeSmoothie = async () => {
   const a = await getFruit("pineapple");
