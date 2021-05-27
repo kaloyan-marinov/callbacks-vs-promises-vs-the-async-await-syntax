@@ -8,5 +8,3 @@ const emojis = fruits.map(async (f) => {
   logMessageWithElapsedTime(emoji);
   return emoji;
 });
-
-// fruitLoop();

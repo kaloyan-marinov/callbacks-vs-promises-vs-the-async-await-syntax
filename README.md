@@ -31,7 +31,7 @@ On the first go around:
 
 (b) it might also queue up asynchronous events to be _called back_ later.
 
-You say, "Here's a function that I need to run, but first I need to go get some data from the network." The event loop says, "Okay, I'll keep doing my thing, while you do your thing in a separate thread pool." Then, at some point in the future, `getData` will finish and let the event loop know that it's ready to be called back - now this is where things get interesting:
+You say, "Here's a *CALLBACK FUNCTION* that I need to run, but first I need to go get some data from the network." The event loop says, "Okay, I'll keep doing my thing, while you do your thing in a separate thread pool." Then, at some point in the future, `getData` will finish and let the event loop know that its associated *CALLBACK FUNCTION* should be finally executed (or, in other words, _CALLED BACK_) - now this is where things get interesting:
 
 (a) if it's a macrotask (like a `setTimeout` or `setInterval`), it will be executed on the next
 event loop, but
@@ -175,7 +175,7 @@ The `async`/`await` syntax really just boils down to syntactic sugar, which make
 
 2. Example of using both the `async` keyword and the `await` keyword when you define a function
 
-   The previous example explained that using the `async` keyword when defining the function causes to return a `Promise`.
+   The previous example explained that using the `async` keyword in front of a function's declaration causes that function to return a `Promise`.
 
    But that's not everything that using `async` does - it also sets up a context for you to use the `await` keyword. Using the `await` keyword enables you to pause the execution of the function.
 
@@ -207,7 +207,7 @@ $ node_modules/typescript/bin/tsc 4-1-use-async-and-await-responsibly.ts
 $ node 4-1-use-async-and-await-responsibly.js
 ```
 
-This is something that you should always be thinking about when working with async functions: _you don't want to [accidentally] pause function unnecessarily_.
+This is something that you should always be thinking about when working with async functions: _you don't want to [accidentally] pause an async function's execution unnecessarily_.
 
 # 5. Error handling
 
